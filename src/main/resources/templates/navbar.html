@@ -1,0 +1,16 @@
+<!-- templates/fragments/navbar.html -->
+<div th:fragment="fragment" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="container-fluid bg-light p-3 border-bottom shadow-sm">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <a th:href="@{/admin}" class="btn btn-outline-primary me-2">Admin Panel</a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <span class="me-3">Logged in as: <strong th:text="${#authentication.name}">User</strong></span>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

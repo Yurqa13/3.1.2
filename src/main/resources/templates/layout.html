@@ -1,0 +1,22 @@
+<!-- templates/layout.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="$TITLE - MyApp">MyApp</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Навбар с логином/логаутом -->
+<div th:replace="fragments/navbar :: fragment"></div>
+
+<!-- Контент страниц -->
+<div class="container mt-4" layout:fragment="content">
+    <p>This is the default layout content.</p>
+</div>
+
+</body>
+</html>
