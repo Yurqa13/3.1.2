@@ -42,6 +42,7 @@ public class AdminController {
 
         return "admin-panel";
     }
+
     @GetMapping("/new")
     public String newUserForm(Model model, Principal principal) {
         model.addAttribute("user", userService.findByUserName(principal.getName()));
@@ -91,13 +92,6 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
-
-
-
-
-
-
-
 
 
 }

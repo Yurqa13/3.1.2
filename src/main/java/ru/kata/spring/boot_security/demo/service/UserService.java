@@ -7,12 +7,15 @@ import java.util.Set;
 
 public interface UserService {
     List<User> getAllUsers();
+
     User getUserById(Long id);
 
     void createUser(String username, int age, String email, String password, Set<String> roleNames);
+
     void updateUser(Long id, String username, int age, String email, String password, Set<String> roleNames);
 
     void deleteUser(Long id);
+
     User findByUserName(String username);
 
 }

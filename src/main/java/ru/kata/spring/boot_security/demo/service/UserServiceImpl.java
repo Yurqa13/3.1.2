@@ -1,13 +1,14 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,13 +29,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+        users.forEach(user -> Hibernate.initialize(user.getRoles())); // Инициализируем роли у всех пользователей
+        return users;
     }
 
     @Override
+    @Transactional
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            Hibernate.initialize(user.getRoles()); // Инициализация ролей
+        }
+        return user;
     }
 
     @Override
@@ -67,18 +76,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public User findByUserName(String username) {
         System.out.println("Searching user by username: " + username);
-        return userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
+        Hibernate.initialize(user.getRoles());
+        return user;
     }
-
-
 
     private Set<Role> getRolesByName(Set<String> roleNames) {
         return roleNames.stream()
